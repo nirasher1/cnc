@@ -7,12 +7,13 @@ from pathlib import Path
 import logging
 from datetime import datetime
 
+sys.path.append(str(Path(__file__).parent.parent.absolute()))
+
 from config import config
 from connection import start_agent
 from commands_execution_utils import start_commands_executor
 from common import encode_command_execution_status, CommandExecutionStatus
 
-sys.path.append(str(Path(__file__).parent.parent.absolute()))
 logger = logging.getLogger(__name__)
 
 
