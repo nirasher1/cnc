@@ -1,0 +1,21 @@
+1:
+  command: hostname
+  description: Get machine name
+  accept_args: false
+  force_args: false
+2:
+  command: dir
+  description: List files
+  accept_args: false
+  force_args: false
+3:
+  command: cd
+  description: Get working directory / Change directory
+  accept_args: true
+  force_args: false
+4:
+  command: nslookup
+  description: Check IP address by domain name
+  accept_args: true
+  force_args: true
+

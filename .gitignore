@@ -1,0 +1,7 @@
+.idea/
+
+*/**/logs_*.log
+
+*/**/__pycache__
+
+agent/payloads
