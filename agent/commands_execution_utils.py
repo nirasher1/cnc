@@ -15,7 +15,7 @@ def generate_command_string(payload, payload_args):
     return payload
 
 
-def run_command(command, command_payload, update_status):
+def run_command(command, command_payload, update_status, execution_cleanup):
     """Get command and execute it as a process"""
     update_status(command, ExecutionStatus.RUNNING)
 
@@ -26,10 +26,12 @@ def run_command(command, command_payload, update_status):
     except subprocess.CalledProcessError as error:
         logger.error(f'Failed running command {command.get_exec_id()}. reason: {str(error)}')
         update_status(command, ExecutionStatus.ERROR, str(error))
+        execution_cleanup(command)
         return
 
     logger.info(f'Command {command.get_exec_id()} running has completed successfully')
     update_status(command, ExecutionStatus.FINISHED, str(result))
+    execution_cleanup(command)
 
 
 def start_commands_executor(commands_handler, update_status):
@@ -37,6 +39,7 @@ def start_commands_executor(commands_handler, update_status):
     while True:
         # Command payload here is the actual command name! we dont really need this, but the insructions ask for reading it from file, so this is the file read result
         command_obj, command_payload = commands_handler.get_command_to_handle()
-        command_thread = Thread(target=run_command, args=[command_obj, command_payload, update_status])
+        command_thread = Thread(target=run_command,
+                                args=[command_obj, command_payload, update_status, commands_handler.cleanup_command])
         update_status(command_obj, ExecutionStatus.INITIALIZED)
         command_thread.start()

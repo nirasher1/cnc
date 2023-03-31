@@ -1,5 +1,5 @@
 from queue import Queue
-from os import path
+from os import path, remove
 from pathlib import Path
 
 
@@ -26,6 +26,10 @@ class CommandsHandler:
             payload_file.close()
 
         return [command, command_payload]
+
+    def cleanup_command(self, command):
+        payload_file_path = self.__get_payload_file_path(command)
+        remove(payload_file_path)
 
     def __write_payload_file(self, command):
         payload_file_path = self.__get_payload_file_path(command)
